@@ -18,8 +18,10 @@ class patientForm:
         self.age = age
         self.height = height
         self.weight = weight
-
+    def __str__(self) -> str:
+        return f"patientForm(name={self.name}, age={self.age}, height={self.height},weight={self.weight})"
+        
 jj = patientForm("Jeriel", 18, 192, 265)
+yaushy = patientForm("Yaushuana", 21, 160, 160)
 print(jj)
-
-print("Hello World ")
+print(yaushy)
