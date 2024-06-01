@@ -9,3 +9,45 @@
 # 5) Practice planning out and flushing out these classes even more.
 #     Take notes in your notebook. What other attributes could a `Movie()` class
 #     contain? What methods? What should the child classes inherit as-is or overwrite?
+
+class Movie:
+    """Defines a movie."""
+    def __init__(self, year, title):
+        self.year = year
+        self.title = title
+
+    def __str__(self) -> str:
+        return f"Movie(year={self.year}, title={self.title})"
+
+class RomCom(Movie):
+
+    """Defines a RomCom movie."""
+    def __init__(self, year, title, length):
+        self.year = year
+        self.title = title
+        self.genre = "RomCom"
+        self.length = length
+        self.pg = 13
+        
+    def __str__(self):
+        return f"RomCom(year={self.year}, title={self.title}, genre={self.genre}, length={self.length}, pg={self.pg})"
+
+class ActionMovie(Movie):
+
+    """Defines an Action movie."""
+    def __init__(self, year, title, length):
+        self.year = year
+        self.title = title
+        self.genre = "Action"
+        self.length = length
+        self.pg = 18
+        
+    def __str__(self):
+        return f"ActionMovie(year={self.year}, title={self.title}, genre={self.genre}, length={self.length}, pg={self.pg})"
+
+m1 = Movie(2024, "My Movie")
+print(m1)
+r1 = RomCom(m1.year, m1.title, 120)
+print(r1)
+r1 = ActionMovie(m1.year, m1.title, 120)
+print(r1)
