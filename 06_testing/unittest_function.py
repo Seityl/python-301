@@ -10,3 +10,14 @@
 # Keep in mind that you will run into an error when you'll attempt to import
 # this file, because Python modules can't begin with a number.
 # You can rename the file to make it work :)
+
+def calculate():
+    while True:
+        try:
+            num1 = int(input("Enter num1: "))
+            num2 = int(input("Enter num2: "))
+            if num1 and num2:
+                cSum = num1 + num2
+                return cSum
+        except ValueError:
+            print("Error: Enter a number")
