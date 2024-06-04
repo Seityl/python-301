@@ -6,3 +6,10 @@
 # print(list_[1])
 #
 # This raises and exception that needs to be handled.
+
+list1 = ["Hello World!"]
+
+try:
+    print(list1[1])
+except:
+    print("Error")
