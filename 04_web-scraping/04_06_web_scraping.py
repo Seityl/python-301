@@ -26,4 +26,5 @@ pageContent = fetchContent(url)
 soup = BeautifulSoup(pageContent, 'html.parser')
 # Extract text form page
 pageText = extractText(soup)
+# Print page information
 print(pageText)
