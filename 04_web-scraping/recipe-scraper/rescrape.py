@@ -8,8 +8,12 @@
 # into the code base, to get some additional practice in working with your
 # custom Python classes.
 
+import re
 import requests
 from bs4 import BeautifulSoup
+from lxml import etree
+
+CLEANR = re.compile('<.*?>') 
 
 # Take name of ingredients as input and return list of ingredients from user
 def getInput():
@@ -34,15 +38,36 @@ def fetchRecipieLinks():
     page = BeautifulSoup(soup, 'html.parser')
     # Look for all links <a>  in the page 
     text = page.find_all('a')
+    # Create list of links found
+    print("Success: Found links")
     links = []
     for link in text:
         links.append(url + link.get('href'))
-    allLinks = '\n'.join(links)
-    return allLinks
-
-print(fetchRecipieLinks())
+    print("Success: Created list of links")
+    return links
 
 # Parse and return recipies
-def getRecipies(soup):
-    pass
-# Search through the receipts to find one that includes the provided ingredients
+def getRecipies(links):
+    for link in links:
+        response = requests.get(link)
+        # Chcek if request is successful
+        response.raise_for_status()
+        print(f"Success: Fetched content from {link}")
+        # Set page content to variable soup
+        soup = response.content
+        # Parse page content
+        page = etree.HTML(response.text)
+        # Search for recipie titles
+        titleHTML = page.xpath(".//h1[@class='title is 2']/text()")
+        print(titleHTML.strip())
+        # Look for recipie title
+        # Look for recipie author
+        # Look for recipie information
+        #return recipieTitle 
+
+    
+getRecipies(fetchRecipieLinks())
+
+# Search through the recepies to find one that includes the provided ingredients
+
+
