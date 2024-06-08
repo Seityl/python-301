@@ -9,3 +9,15 @@
 #
 # You do not need to implement the actual functions after writing the tests 
 # but of course you can do that, too.
+
+import math
+import unittest
+
+class Test(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(self + self)
+    def test_multiply(self):
+        self.assertEqual(self * self)
+
+if __name__ == "__main__":
+    unittest.main()
