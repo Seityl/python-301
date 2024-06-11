@@ -1,0 +1,15 @@
+import pytest_scraper
+
+class TestPytestScraper():
+    def test_get_page_content(self):
+        assert(pytest_scraper.get_page_content(self))
+    def test_get_html_content(self):
+        assert(pytest_scraper.get_html_content(self))
+    def test_make_soup(self):
+        assert(pytest_scraper.make_soup(self))
+    def test_get_recipie_links(self):
+        assert(pytest_scraper.get_recipie_links(self))
+    def test_get_author(self):
+        assert(pytest_scraper.get_author(self))
+    def test_get_recipie(self):
+        assert(pytest_scraper.get_recipie(self))
