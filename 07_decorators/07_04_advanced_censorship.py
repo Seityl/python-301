@@ -1,41 +1,27 @@
 # Build on top of the censorship exercise and change your decorator function
 # so that you can pass the words it should censor when decorating a function, e.g.:
 # `@censor("shoot", "crab")` would censor the words "shoot" and "crab".
+import re
 
-def decorator(function):
-    takingInput = True
-    while takingInput == True:
+def decorator(func):
+    def wrapper(*args):
+        # Initialize list of words to be iterated through
         words = []
-        word = str(input("Enter the word that you would like to be censored:"))
-        print("Type '1' to stop accepting words")
-        if word == '1':
-            takingInput == False
-        else:
-            words.append(word)
-    def censor(*args'):
-        print("\nBefore Censoring:\n" + "-" * 25)
-        result = function(*args)
-        print(result)
+        print("\nBefore Censoring:\n" + func() + "\n" + "-" * 25)
         print("\nAfter Censoring:\n" + "-" * 25)
-        sentences = result.split("!")
-        censoredSentences = []
-        for sentence in sentences:
-            words = sentence.split(" ")
-            censoredWords = []
-            for word in words:
-                if "!" in word:
-                    word = word.replace("!", "")
-                if word.lower() == "shoot":
-                    censoredWords.append("S****")
-                else:
-                    censoredWords.append(word)
-            censoredSentence = " ".join(censoredWords)
-            censoredSentences.append(censoredSentence + "!")
-        return " ".join(censoredSentences)
-    return censor
+        # Remove punctuation from the sentence
+        sentence = re.sub(r'[^\w\s]', '', func())
+        # Create list of words to be iterated through
+        words = func.split(" ")
+        for word in words:
+            if word in args:
+                word = "*" * len(word)
+            censoredSentence = [" ".join(word) for word in words]
+        return censoredSentence
+    return wrapper
 
 @decorator
-def sentence(oWord):
-    return "I bumped my toe! " + oWord
+def sentence(shoot):
+    return shoot + "I bumped my toe!"
 
-print(sentence('Shoot!'))
+sentence()
