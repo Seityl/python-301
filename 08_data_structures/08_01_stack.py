@@ -1,88 +1,67 @@
 # Build a custom `Stack` similar to the `Queue` you built
-
 class Node:
-    def __init__(self, value=None):
+    def __init__(self, value = None):
         self.value = value
         self.next = None
-    def __repr__(self):
-        return f"Node({self.value})"
-
-class LinkedList:
+    
+class Stack:
     def __init__(self):
-        self.head = None
-        self.tail = None
-        self.length = 0
-    def append(self, value):
+        self.top = None
+        self.bottom = None
+        self.height = 0
+
+    # Checks whether there are any elements in the stack
+    def isEmpty(self):
+        return self.height == 0
+
+    # Adds an element to the collection
+    def push(self, value):
         newNode = Node(value)
-        if self.head is None:
-            self.head = newNode
-            self.tail = newNode
-        else:
-            self.tail.next = newNode
-            self.tail = newNode
-        self.length +=1
-    def prepend(self, value):
-        newNode = Node(value)
-        if self.head is None:
-            self.head = newNode
-            self.tail = newNode
-        else:
-            newNode.next = self.head
-            self.head = newNode
-        self.length += 1
-    def getNode(self, index):
-        if index < 0 or index >= self.length:
+        newNode.next = self.top
+        self.bottom = newNode
+        self.top = newNode
+        self.height += 1
+
+    # Removes the most recently added element from the collection
+    def pop(self):
+        if self.isEmpty():
             return None
-        currentNode = self.head
-        for i in range(index):
-            currentNode = currentNode.next
-        return currentNode
-    def insert(self, index, value):
-        if index < 0 or index > self.length:
-            return
-        newNode = Node(value)
-        if index == 0:
-            newNode.next = self.head
-            self.head = newNode
         else:
-            prevNode = self.getNode(index - 1)
-            newNode.next = prevNode.next
-            prevNode.next = newNode
-        self.length += 1
-    def remove(self, index):
-        if index < 0 or index >= self.length:
-            return
-        if index == 0:
-            self.head - self.head.next
-        else:
-            prevNode = self.getNode(index - 1)
-            prevNode.next = prevNode.next.next
-        self.length -= 1    
+            popNode = self.top
+            self.top = self.top.next
+            self.height -= 1
+            if self.isEmpty():
+                self.bottom = None
+            return popNode.value
+    # Returns the topmost element without removing it from the stack    
+    def peek(self):
+        return self.top.value
+
+    # Returns the total size of the stack
+    def checkSize(self):
+        return self.height
+    
     def __repr__(self):
-        node = self.head
+        node = self.top
         nodes = []
         while node is not None:
             nodes.append(str(node.value))
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
-    
-ll = LinkedList()
-ll.append(10)
-ll.append(20)
-ll.append(30)
 
-print(ll)
+sandwich = Stack()
 
-ll.prepend(5)
-print(ll)
+sandwich.push("Bottom Bread")
+sandwich.push("Mayo")
+sandwich.push("Lettuce")
+sandwich.push("Egg")
+sandwich.push("Top Bread")
 
-node = ll.getNode(1)
-print(node.value)
+print(sandwich)
 
-print(node)
+sandwich.pop()
+print(sandwich)
 
-ll.remove(2)
-print(ll)
-ll.insert(3, 100)
-print(ll)
+print(sandwich.checkSize())
+print(sandwich.peek())

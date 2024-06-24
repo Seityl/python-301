@@ -1,3 +1,11 @@
+def dequeueWithLogging(func):
+    def wrapper(self):
+        print(f"Getting item... Current queue size: {self.length}")
+        item = func(self)
+        print(f"Got item: {item}. Updated queue size: {self.length}")
+        return item
+    return wrapper
+
 class Node:
     def __init__(self, value = None):
         self.value = value
@@ -8,13 +16,16 @@ class Queue:
         self.head = None
         self.tail = None
         self.length = 0
+        
     def isEmpty(self):
         return self.head is None
+        
     def peek(self):
         if self.isEmpty():
             return None
         else:
             return self.head.value
+            
     def enqueue(self, value):
         newNode = Node(value)
         if self.isEmpty():
@@ -24,6 +35,8 @@ class Queue:
             self.tail.next = newNode
             self.tail = newNode
         self.length += 1
+        
+    @dequeueWithLogging
     def dequeue(self):
         if self.isEmpty():
             return None
@@ -34,6 +47,7 @@ class Queue:
             if self.isEmpty():
                 self.tail = None
             return dequeuedNode.value
+            
     def __repr__(self):
         node = self.head
         nodes = []
@@ -42,7 +56,7 @@ class Queue:
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
-    
+
 morningTasks = Queue()
 
 morningTasks.enqueue("Wake Up")
