@@ -12,43 +12,95 @@
 # - If a Pokemon loses a battle, they lose some of their `hp`
 # - If you call the `feed()` method on a Pokemon, they regain some `hp`
 
-from enum import Enum
 import random
-
-class PrimaryType(Enum):
-    # Initializes primary types using enum
-    WATER = "Water"
-    FIRE = "Fire"
-    GRASS = "Grass"
 
 class Pokemon:
     # Initialize pokemon class with pokemon name, primary type, max hp & hp
     def __init__(self, name,  primaryType, maxHp, hp):
-        print(f"Initializing Pokemon w/ Name: {name}, Primary Type: {primaryType}, Max HP: {maxHp}, HP: {hp}")
-        
+        print(f"--Initializing Pokemon--\nName: {name}, Primary Type: {primaryType}, Max HP: {maxHp}, HP: {hp}\n")
+
+        # Set Name
         self.name = name
+
+        # Set Primary Type
         primaryType = primaryType.lower()
         if primaryType == 'water' or primaryType == 'fire' or primaryType == 'grass':
             self.primaryType = primaryType.capitalize()
         else:
             raise ValueError("Wrong Primary Type Provided. 'Water', 'Fire', 'Grass' Only.  ")
 
+        # Set Max HP
         self.maxHp = maxHp
+        # Set HP
         self.hp = hp
 
     @classmethod 
-    def createRandom(cls, name, maxHp, hp):
-        randomType = random.choice(list(PrimaryType))
+    def createRandom(cls):
+        name = str(input("Enter Pokemon Name: "))
+        maxHp = random.randint(1, 100)
+        hp = maxHp
+        types = ['Water', 'Fire', 'Grass']
+        randomType = random.choice(types)
         return cls(name, randomType, maxHp, hp)
+
+    # TODO: This should remove a random % of the pokemon's HP
+    def damage(self):
+        damage = random.randint(0, self.hp)
+        self.hp -= damage
+        return f"\n{self.name} took {damage} damage.\n"
+    # TODO: This should restore a random % of the pokemon's HP
+    def feed():
+        pass
 
     def __repr__(self):
         return f"Name: {self.name}, Primary Type: {self.primaryType}, Max HP: {self.maxHp}, HP: {self.hp}"
 
 try:
-    p1 = Pokemon("Jeriel", "Water", 1000, 1000)
-    print(f"Pokemon Instance Created Successfully: {p1}")
+    p1 = Pokemon.createRandom()
+    print(f"--Pokemon Instance Created Successfully--\n{p1}\n")
+    p2 = Pokemon.createRandom()
+    print(f"--Pokemon Instance Created Successfully--\n{p2}\n")
 except ValueError as e:
     print("Error Occured During Creating Pokemon: ", e)
 
-def battle():
-    pass
+# Simulated rock, paper, scissors style battle
+# Loser should lose a % of their HP
+def battle(pokemon1, pokemon2):
+    print(f"{'-' * 25}\n{pokemon1.name} VS {pokemon2.name}\n{'-' * 25}")
+    # p = pokemon, PT = primary type
+    p1PT = pokemon1.primaryType.lower()
+    p2PT = pokemon2.primaryType.lower()
+    winner = ''
+    loser = ''
+    if p1PT == 'water' and p2PT == 'fire':
+        winner = pokemon1
+        loser = pokemon2
+        return f"{winner.name} won this battle!\n{loser.damage()}"
+    if p2PT == 'water' and p1PT == 'fire':
+        winner = pokemon2
+        loser = pokemon1
+        return f"{winner.name} won this battle!\n{loser.damage()}"
+    if p1PT == 'water' and p2PT == 'grass': 
+        winner = pokemon2
+        loser = pokemon1
+        return f"{winner.name} won this battle!\n{loser.damage()}"
+    if p1PT == 'grass' and p2PT == 'water': 
+        winner = pokemon1
+        loser = pokemon2
+        return f"{winner.name} won this battle!\n{loser.damage()}"
+    if p1PT == 'fire' and p2PT == 'grass': 
+        winner = pokemon1
+        loser = pokemon2
+        return f"{winner.name} won this battle!\n{loser.damage()}"
+    if p2PT == 'fire' and p1PT == 'grass':
+        winner = pokemon2
+        loser = pokemon1
+        return f"{winner.name} won this battle!\n{loser.damage()}"
+    if p1PT == 'water' and p2PT == 'water':
+        return f"Draw!"
+    if p1PT == 'fire' and p2PT == 'fire':
+        return f"Draw!"
+    if p1PT == 'grass' and p2PT == 'grass':
+        return f"Draw!"
+
+print(battle(p1, p2))
