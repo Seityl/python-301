@@ -48,59 +48,92 @@ class Pokemon:
         damage = random.randint(0, self.hp)
         self.hp -= damage
         return f"\n{self.name} took {damage} damage.\n"
+        
     # TODO: This should restore a random % of the pokemon's HP
-    def feed():
-        pass
+    def feed(self):
+        heal = random.randint(0, self.maxHp - self.hp)
+        self.hp += heal
+        return f"\n{self.name} healed {heal} HP.\nNow at {self.hp} HP / {self.maxHp} HP\n"
 
     def __repr__(self):
         return f"Name: {self.name}, Primary Type: {self.primaryType}, Max HP: {self.maxHp}, HP: {self.hp}"
 
+# Simulated rock, paper, scissors style battle
+# Loser should lose a % of their HP
+#TODO: This should auto simulate the battles until the HP of one of the pokemons is <= 0
+#TODO: There should be a 25% chance of healing before each battle if their hp is less than max
+# Should not be able to heal to more than max HP
+
+def battle(pokemon1, pokemon2):
+    global over
+    if pokemon1.hp > 0 and pokemon2.hp > 0:
+        print(f"{'-' * 25}\n{pokemon1.name} VS {pokemon2.name}\n{'-' * 25}")
+        # p = pokemon, PT = primary type
+        p1PT = pokemon1.primaryType.lower()
+        p2PT = pokemon2.primaryType.lower()
+        
+        winner = ''
+        loser = ''
+        
+        if p1PT == 'water' and p2PT == 'fire':
+            winner = pokemon1
+            loser = pokemon2
+            
+            return f"{winner.name} won this battle!\n{loser.damage()}"
+            
+        if p2PT == 'water' and p1PT == 'fire':
+            winner = pokemon2
+            loser = pokemon1
+            
+            return f"{winner.name} won this battle!\n{loser.damage()}"
+            
+        if p1PT == 'water' and p2PT == 'grass': 
+            winner = pokemon2
+            loser = pokemon1
+            
+            return f"{winner.name} won this battle!\n{loser.damage()}"
+            
+        if p1PT == 'grass' and p2PT == 'water': 
+            winner = pokemon1
+            loser = pokemon2
+            
+            return f"{winner.name} won this battle!\n{loser.damage()}"
+            
+        if p1PT == 'fire' and p2PT == 'grass': 
+            winner = pokemon1
+            loser = pokemon2
+            
+            return f"{winner.name} won this battle!\n{loser.damage()}"
+            
+        if p2PT == 'fire' and p1PT == 'grass':
+            winner = pokemon2
+            loser = pokemon1
+            
+            return f"{winner.name} won this battle!\n{loser.damage()}"
+            
+        if p1PT == 'water' and p2PT == 'water':
+            over = 1
+            return f"Draw!"
+            
+        if p1PT == 'fire' and p2PT == 'fire':
+            over = 1
+            return f"Draw!"
+
+        if p1PT == 'grass' and p2PT == 'grass':
+            over = 1
+            return f"Draw!"
+    else:
+        over = 1
+        
 try:
     p1 = Pokemon.createRandom()
     print(f"--Pokemon Instance Created Successfully--\n{p1}\n")
+    
     p2 = Pokemon.createRandom()
     print(f"--Pokemon Instance Created Successfully--\n{p2}\n")
+
 except ValueError as e:
     print("Error Occured During Creating Pokemon: ", e)
 
-# Simulated rock, paper, scissors style battle
-# Loser should lose a % of their HP
-def battle(pokemon1, pokemon2):
-    print(f"{'-' * 25}\n{pokemon1.name} VS {pokemon2.name}\n{'-' * 25}")
-    # p = pokemon, PT = primary type
-    p1PT = pokemon1.primaryType.lower()
-    p2PT = pokemon2.primaryType.lower()
-    winner = ''
-    loser = ''
-    if p1PT == 'water' and p2PT == 'fire':
-        winner = pokemon1
-        loser = pokemon2
-        return f"{winner.name} won this battle!\n{loser.damage()}"
-    if p2PT == 'water' and p1PT == 'fire':
-        winner = pokemon2
-        loser = pokemon1
-        return f"{winner.name} won this battle!\n{loser.damage()}"
-    if p1PT == 'water' and p2PT == 'grass': 
-        winner = pokemon2
-        loser = pokemon1
-        return f"{winner.name} won this battle!\n{loser.damage()}"
-    if p1PT == 'grass' and p2PT == 'water': 
-        winner = pokemon1
-        loser = pokemon2
-        return f"{winner.name} won this battle!\n{loser.damage()}"
-    if p1PT == 'fire' and p2PT == 'grass': 
-        winner = pokemon1
-        loser = pokemon2
-        return f"{winner.name} won this battle!\n{loser.damage()}"
-    if p2PT == 'fire' and p1PT == 'grass':
-        winner = pokemon2
-        loser = pokemon1
-        return f"{winner.name} won this battle!\n{loser.damage()}"
-    if p1PT == 'water' and p2PT == 'water':
-        return f"Draw!"
-    if p1PT == 'fire' and p2PT == 'fire':
-        return f"Draw!"
-    if p1PT == 'grass' and p2PT == 'grass':
-        return f"Draw!"
-
-print(battle(p1, p2))
+while over == 0:
+    print(battle(p1, p2))
